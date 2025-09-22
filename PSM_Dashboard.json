@@ -1,0 +1,1805 @@
+[
+    {
+        "id": "23fc9137c786aebb",
+        "type": "tab",
+        "label": "PSM",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "f8c2f4e3e8b0d4c4",
+        "type": "mqtt in",
+        "z": "23fc9137c786aebb",
+        "name": "Rover Status",
+        "topic": "rover/status",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "6dd4291b97d146c6",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 170,
+        "y": 220,
+        "wires": [
+            [
+                "58c89d23f1d36b5f"
+            ]
+        ]
+    },
+    {
+        "id": "58c89d23f1d36b5f",
+        "type": "debug",
+        "z": "23fc9137c786aebb",
+        "name": "rover debug",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 350,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "b4dc166e8f4811a0",
+        "type": "mqtt in",
+        "z": "23fc9137c786aebb",
+        "name": "flex Input",
+        "topic": "flex/sensor",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "6dd4291b97d146c6",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 100,
+        "y": 700,
+        "wires": [
+            [
+                "d622e0543ed821eb",
+                "4a487f4fe1bec37b"
+            ]
+        ]
+    },
+    {
+        "id": "d622e0543ed821eb",
+        "type": "debug",
+        "z": "23fc9137c786aebb",
+        "name": "flex output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 110,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "547d9b4fae9462ed",
+        "type": "mqtt out",
+        "z": "23fc9137c786aebb",
+        "name": "MQTT Output",
+        "topic": "flex/command",
+        "qos": "2",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "6dd4291b97d146c6",
+        "x": 520,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "6ff9b634578a602c",
+        "type": "debug",
+        "z": "23fc9137c786aebb",
+        "name": "mapping output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 320,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "4a487f4fe1bec37b",
+        "type": "function",
+        "z": "23fc9137c786aebb",
+        "name": "flex_servo mapping",
+        "func": "return msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 290,
+        "y": 700,
+        "wires": [
+            [
+                "547d9b4fae9462ed",
+                "6ff9b634578a602c"
+            ]
+        ]
+    },
+    {
+        "id": "548bc94f55ad34d6",
+        "type": "ui_template",
+        "z": "23fc9137c786aebb",
+        "group": "be60b5de6eea8b85",
+        "name": "Live Camera Feed",
+        "order": 1,
+        "width": 14,
+        "height": 11,
+        "format": "<html lang=\"en\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n</head>\n\n<body>\n    <!-- Display the multipart JPEG stream -->\n    <img src=\"http://172.20.10.4:8000/stream.mjpg\" alt=\"Webcam Stream\">\n</body>\n\n</html>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 430,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "423bdbfe76687d75",
+        "type": "ui_template",
+        "z": "23fc9137c786aebb",
+        "group": "d7403c926761729c",
+        "name": "css etc",
+        "order": 19,
+        "width": 8,
+        "height": 1,
+        "format": "<style>\n  .filled { \n      height: 100% !important;\n\n      padding: 0 !important;\n      margin: 0 !important;\n  }\n  .nr-dashboard-template {\n      padding: 0;\n      margin: 0;\n  }\n  \n  .rounded {\n  border-radius: 50px;\n}\n \n   .bigfont {\n  font-size: 25px;\n}\n\n   .smallfont {\n  font-size: 12px;\n}\n\n  .titlefont {\n    font-size: 20px;\n    font-weight: bold;\n  }\n  \n</style>\n\n<script>\n$('.vibrate').on('click', function() {\n  navigator.vibrate(100);\n});\n\nfunction restore_bg(x) {\n            $(this).css(\"background-color\", x);\n    };\n\n$('.touched').on('mousedown', function() {\n    \n    var x= $(this).css(\"background-color\");\n    $(this).css(\"background-color\", \"yellow\");\n    \n    setTimeout(restore_bg.bind(this,x),100);\n    navigator.vibrate(80);\n    });\n    \n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 440,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c0e94e455e4bdaa4",
+        "type": "mqtt out",
+        "z": "23fc9137c786aebb",
+        "name": "Brush Command",
+        "topic": "servo/brush",
+        "qos": "2",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "6dd4291b97d146c6",
+        "x": 310,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "6decfbf4efde9a89",
+        "type": "mqtt in",
+        "z": "23fc9137c786aebb",
+        "name": "Brush Status",
+        "topic": "servo/brushStat",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "6dd4291b97d146c6",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 110,
+        "y": 520,
+        "wires": [
+            [
+                "84ce0d1f4ae4a75f"
+            ]
+        ]
+    },
+    {
+        "id": "84ce0d1f4ae4a75f",
+        "type": "debug",
+        "z": "23fc9137c786aebb",
+        "name": "Brush Command",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 310,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "f4a367172490b929",
+        "type": "ui_switch",
+        "z": "23fc9137c786aebb",
+        "name": "brush switch",
+        "label": "Brush switch (ON/OFF)",
+        "tooltip": "",
+        "group": "d7403c926761729c",
+        "order": 1,
+        "width": 8,
+        "height": 2,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "servo/brush",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "1",
+        "onvalueType": "num",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "0",
+        "offvalueType": "num",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 110,
+        "y": 580,
+        "wires": [
+            [
+                "c0e94e455e4bdaa4"
+            ]
+        ]
+    },
+    {
+        "id": "55356f7566755b5a",
+        "type": "mqtt out",
+        "z": "23fc9137c786aebb",
+        "name": "Motor Command",
+        "topic": "rover/status",
+        "qos": "2",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "6dd4291b97d146c6",
+        "x": 410,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "51db8ce23d5c2018",
+        "type": "ui_template",
+        "z": "23fc9137c786aebb",
+        "group": "d7403c926761729c",
+        "name": "forward",
+        "order": 3,
+        "width": 2,
+        "height": 2,
+        "format": "<script>\n    (function(scope) {\n        scope.state = false;  // Initial state\n        \n        scope.toggleState = function() {\n            scope.state = !scope.state;\n            scope.send({payload: scope.state ? 1 : 0, topic: 'rover/status'});\n        };\n    })(scope);\n</script>\n\n<md-button \n    class=\"vibrate filled touched bigfont rounded\" \n    style=\"background-color: #f5f52f; color: white;\" \n    ng-click=\"toggleState()\">\n    <i class=\"fa fa-arrow-up\"></i>\n</md-button>\n",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 180,
+        "y": 280,
+        "wires": [
+            [
+                "55356f7566755b5a"
+            ]
+        ]
+    },
+    {
+        "id": "23bbded70f1fa60f",
+        "type": "ui_template",
+        "z": "23fc9137c786aebb",
+        "group": "d7403c926761729c",
+        "name": "backward",
+        "order": 13,
+        "width": 2,
+        "height": 2,
+        "format": "<script>\n    (function(scope) {\n        scope.state = false;  // Initial state\n        \n        scope.toggleState = function() {\n            scope.state = !scope.state;\n            scope.send({payload: scope.state ? 2 : 0, topic: 'rover/status'});\n        };\n    })(scope);\n</script>\n\n<md-button \n    class=\"vibrate filled touched bigfont rounded\" \n    style=\"background-color: #6bc246; color: white;\" \n    ng-click=\"toggleState()\">\n    <i class=\"fa fa-arrow-down\"></i>\n</md-button>\n",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 180,
+        "y": 320,
+        "wires": [
+            [
+                "55356f7566755b5a"
+            ]
+        ]
+    },
+    {
+        "id": "ae89b833f9fa6dce",
+        "type": "ui_template",
+        "z": "23fc9137c786aebb",
+        "group": "d7403c926761729c",
+        "name": "right",
+        "order": 10,
+        "width": 2,
+        "height": 2,
+        "format": "<script>\n    (function(scope) {\n        scope.state = false;  // Initial state\n        \n        scope.toggleState = function() {\n            scope.state = !scope.state;\n            scope.send({payload: scope.state ? 3 : 0, topic: 'rover/status'});\n        };\n    })(scope);\n</script>\n\n<md-button \n    class=\"vibrate filled touched bigfont rounded\" \n    style=\"background-color: #cf1f13; color: white;\" \n    ng-click=\"toggleState()\">\n    <i class=\"fa fa-arrow-right\"></i> \n</md-button>\n",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 190,
+        "y": 360,
+        "wires": [
+            [
+                "55356f7566755b5a"
+            ]
+        ]
+    },
+    {
+        "id": "3cc9cd752beab1b3",
+        "type": "ui_template",
+        "z": "23fc9137c786aebb",
+        "group": "d7403c926761729c",
+        "name": "left",
+        "order": 8,
+        "width": 2,
+        "height": 2,
+        "format": "<script>\n    (function(scope) {\n        scope.state = false;  // Initial state\n        \n        scope.toggleState = function() {\n            scope.state = !scope.state;\n            scope.send({payload: scope.state ? 4 : 0, topic: 'rover/status'});\n        };\n    })(scope);\n</script>\n\n<md-button \n    class=\"vibrate filled touched bigfont rounded\" \n    style=\"background-color: #1e45c7; color: white;\" \n    ng-click=\"toggleState()\">\n    <i class=\"fa fa-arrow-left\"></i>\n</md-button>\n",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 190,
+        "y": 400,
+        "wires": [
+            [
+                "55356f7566755b5a"
+            ]
+        ]
+    },
+    {
+        "id": "1eab22ec65d92f8a",
+        "type": "mqtt in",
+        "z": "23fc9137c786aebb",
+        "name": "sensor Input",
+        "topic": "sensor/#",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "6dd4291b97d146c6",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 90,
+        "y": 960,
+        "wires": [
+            [
+                "e87a15eb89d500e6",
+                "c7c7e0ff44e92da9"
+            ]
+        ]
+    },
+    {
+        "id": "e87a15eb89d500e6",
+        "type": "switch",
+        "z": "23fc9137c786aebb",
+        "name": "TOPIC SWITCHING",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "sensor/ultrasonic",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "sensor/MQ4",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 300,
+        "y": 960,
+        "wires": [
+            [
+                "6a6f466c54fd09e3",
+                "711a1e43ffad3dc2"
+            ],
+            [
+                "3218b16e59066b16",
+                "97c6cc707c182d65"
+            ]
+        ]
+    },
+    {
+        "id": "6a6f466c54fd09e3",
+        "type": "function",
+        "z": "23fc9137c786aebb",
+        "name": "insert ultrasonic",
+        "func": "msg.topic = \"INSERT INTO ultrasonicdata (value) VALUES ('\" + msg.payload + \"')\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 900,
+        "wires": [
+            [
+                "1cd199e9a64f1302",
+                "8c4491e72c98d268",
+                "cddb1c0c95629506"
+            ]
+        ]
+    },
+    {
+        "id": "1cd199e9a64f1302",
+        "type": "debug",
+        "z": "23fc9137c786aebb",
+        "name": "D_inputS1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "c7c7e0ff44e92da9",
+        "type": "debug",
+        "z": "23fc9137c786aebb",
+        "name": "sensor",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 90,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "8c4491e72c98d268",
+        "type": "mysql",
+        "z": "23fc9137c786aebb",
+        "mydb": "b9170a1266df53af",
+        "name": "",
+        "x": 850,
+        "y": 960,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "711a1e43ffad3dc2",
+        "type": "debug",
+        "z": "23fc9137c786aebb",
+        "name": "D_topicS1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 310,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "3218b16e59066b16",
+        "type": "function",
+        "z": "23fc9137c786aebb",
+        "name": "insert gas",
+        "func": "// Parse payload to ensure it is an object\nlet payload = typeof msg.payload === \"string\" ? JSON.parse(msg.payload) : msg.payload;\n\n// Extract sensor values\nconst LPG = payload.LPG;\nconst CO = payload.CO;\nconst Smoke = payload.Smoke;\n\n// Construct the SQL query\nmsg.topic = `INSERT INTO gasdata (LPG, CO, Smoke) VALUES (${LPG}, ${CO}, ${Smoke})`;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 580,
+        "y": 1040,
+        "wires": [
+            [
+                "f8cd0bbdde4005e6",
+                "8c4491e72c98d268",
+                "0311e8e8896c449a",
+                "9f6dfb7b457ac145",
+                "85e9e1fd3511b2c2",
+                "e9aa29c50be55020"
+            ]
+        ]
+    },
+    {
+        "id": "f8cd0bbdde4005e6",
+        "type": "debug",
+        "z": "23fc9137c786aebb",
+        "name": "D_inputS2",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "97c6cc707c182d65",
+        "type": "debug",
+        "z": "23fc9137c786aebb",
+        "name": "D_topicS2",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 310,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "94c6d5d5472be6d3",
+        "type": "ui_table",
+        "z": "23fc9137c786aebb",
+        "group": "92d60f693acbc072",
+        "name": "Ultrasonic Data",
+        "order": 1,
+        "width": 5,
+        "height": 5,
+        "columns": [
+            {
+                "field": "timestamp",
+                "title": "date_Time",
+                "width": "",
+                "align": "center",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "value",
+                "title": "distance (in m)",
+                "width": "",
+                "align": "center",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 1100,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "9e33f566.8c9098",
+        "type": "comment",
+        "z": "23fc9137c786aebb",
+        "name": "sensor",
+        "info": "",
+        "x": 70,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "cddb1c0c95629506",
+        "type": "function",
+        "z": "23fc9137c786aebb",
+        "name": "create ultrasonic table",
+        "func": "// Get the current timestamp in seconds and convert to milliseconds\nvar d = Math.floor(Date.now());\n\n// Retrieve the value from msg.payload\nvar value = parseFloat(msg.payload).toFixed(2);\n\n// Retrieve or initialize historical data\nvar tableData = flow.get(\"savedData\") || [];\n\n// Add the new data to the beginning of the tableData array\ntableData.unshift({\n    \"timestamp\": new Date(d).toLocaleString(),\n    \"value\": parseFloat(value)\n});\n\n// Update msg.payload with the table data\nmsg.payload = tableData;\n\n// Save the updated table data to flow context\nflow.set(\"savedData\", tableData);\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 860,
+        "y": 900,
+        "wires": [
+            [
+                "94c6d5d5472be6d3",
+                "4d29c159623abb9c"
+            ]
+        ]
+    },
+    {
+        "id": "4d29c159623abb9c",
+        "type": "debug",
+        "z": "23fc9137c786aebb",
+        "name": "us table",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1080,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "6c25a041af209e8c",
+        "type": "ui_table",
+        "z": "23fc9137c786aebb",
+        "group": "7e2a8c828da1f11b",
+        "name": "Gas Data",
+        "order": 1,
+        "width": 5,
+        "height": 5,
+        "columns": [
+            {
+                "field": "timestamp",
+                "title": "date_Time",
+                "width": "",
+                "align": "center",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "LPG",
+                "title": "LPG (ppm)",
+                "width": "",
+                "align": "center",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "CO",
+                "title": "CO (ppm)",
+                "width": "",
+                "align": "center",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "Smoke",
+                "title": "Smoke (ppm)",
+                "width": "",
+                "align": "center",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 1080,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "0311e8e8896c449a",
+        "type": "function",
+        "z": "23fc9137c786aebb",
+        "name": "create gas table",
+        "func": "// Parse payload to ensure it is an object\nlet payload = typeof msg.payload === \"string\" ? JSON.parse(msg.payload) : msg.payload;\n\n// Extract sensor values and format them to 2 decimal places\nconst LPG = parseFloat(payload.LPG).toFixed(2);\nconst CO = parseFloat(payload.CO).toFixed(2);\nconst Smoke = parseFloat(payload.Smoke).toFixed(2);\n\n// Create a new entry with the current timestamp\nconst entry = {\n    timestamp: new Date().toLocaleString(),\n    LPG: parseFloat(LPG),     // Keep as numbers, not strings\n    CO: parseFloat(CO),\n    Smoke: parseFloat(Smoke)\n};\n\n// Retrieve or initialize table data from flow context\nlet tableData = flow.get(\"gasDataTable\") || [];\n\n// Add the new entry to the beginning of the table\ntableData.unshift(entry);\n\n// Update the table in flow context\nflow.set(\"gasDataTable\", tableData);\n\n// Update the payload with the table data for visualization\nmsg.payload = tableData;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 860,
+        "y": 1040,
+        "wires": [
+            [
+                "6c25a041af209e8c",
+                "07a7db54fd382f70"
+            ]
+        ]
+    },
+    {
+        "id": "07a7db54fd382f70",
+        "type": "debug",
+        "z": "23fc9137c786aebb",
+        "name": "gas table",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1080,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "9b59782a57129dfb",
+        "type": "function",
+        "z": "23fc9137c786aebb",
+        "name": "set JSON data w timestamp",
+        "func": "// Current timestamp\nvar d = Math.floor(Date.now());\nvar value = msg.payload;\n\n// Retrieve or initialize session state from flow context\nvar sessionData = flow.get(\"sessionData\") || { start: null, stop: null };\n\n// Output messages\nvar startMsg = null;\nvar stopMsg = null;\n\n// Logic for starting or stopping the session\nif (msg.payload === 1) {\n    // Start session\n    sessionData.start = d;\n    startMsg = { payload: new Date(sessionData.start).toLocaleString(), topic: \"startTime\" };\n    node.warn(\"Session started at: \" + sessionData.start);\n} else if (msg.payload === 0) {\n    // Stop session\n    sessionData.stop = d;\n    stopMsg = { payload: new Date(sessionData.stop).toLocaleString(), topic: \"endTime\" };\n    node.warn(\"Session stopped at: \" + sessionData.stop);\n\n    // Calculate duration in seconds\n    var duration = (sessionData.stop - sessionData.start) / 1000;\n\n    // Prepare SQL query\n    msg.topic = `\n        INSERT INTO cleaningsession (startTime, endTime, duration)\n        VALUES (FROM_UNIXTIME(${sessionData.start / 1000}), FROM_UNIXTIME(${sessionData.stop / 1000}), ${duration});\n    `;\n\n    // Clear session state\n    sessionData.start = null;\n    sessionData.stop = null;\n}\n\n// Save updated session state to flow context\nflow.set(\"sessionData\", sessionData);\n\n// Return both start and stop messages along with the main message\nreturn [msg, startMsg, stopMsg];",
+        "outputs": 3,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 880,
+        "y": 120,
+        "wires": [
+            [
+                "3847013d015ee524"
+            ],
+            [
+                "f01dabc96f31b4c6"
+            ],
+            [
+                "4ef7c401b10e9473"
+            ]
+        ]
+    },
+    {
+        "id": "f01dabc96f31b4c6",
+        "type": "ui_text",
+        "z": "23fc9137c786aebb",
+        "group": "cd07a71064b7177d",
+        "order": 2,
+        "width": 8,
+        "height": 1,
+        "name": "Start Time",
+        "label": "Start Time",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": "",
+        "color": "#000000",
+        "x": 1170,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "4ef7c401b10e9473",
+        "type": "ui_text",
+        "z": "23fc9137c786aebb",
+        "group": "cd07a71064b7177d",
+        "order": 3,
+        "width": 8,
+        "height": 1,
+        "name": "End Time",
+        "label": "End Time",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": "",
+        "color": "#000000",
+        "x": 1180,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "24f016c4d6a7c1f1",
+        "type": "ui_switch",
+        "z": "23fc9137c786aebb",
+        "name": "session",
+        "label": "Session (START/STOP)",
+        "tooltip": "",
+        "group": "cd07a71064b7177d",
+        "order": 1,
+        "width": 8,
+        "height": 1,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "payload",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "1",
+        "onvalueType": "num",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "0",
+        "offvalueType": "num",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "titlefont",
+        "x": 640,
+        "y": 120,
+        "wires": [
+            [
+                "9b59782a57129dfb"
+            ]
+        ]
+    },
+    {
+        "id": "3847013d015ee524",
+        "type": "mysql",
+        "z": "23fc9137c786aebb",
+        "mydb": "b9170a1266df53af",
+        "name": "",
+        "x": 1150,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "dcec89f508ec0efb",
+        "type": "ui_chart",
+        "z": "23fc9137c786aebb",
+        "name": "LPG Concentration",
+        "group": "487946168fa418b0",
+        "order": 1,
+        "width": 16,
+        "height": 4,
+        "label": "Average LPG Concentration (ppm)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "0.01",
+        "removeOlder": "100",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "1",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#000000",
+            "#000000",
+            "#000000",
+            "#000000",
+            "#000000",
+            "#000000",
+            "#000000",
+            "#000000"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1060,
+        "y": 1240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9f6dfb7b457ac145",
+        "type": "function",
+        "z": "23fc9137c786aebb",
+        "name": "Process LPG Data",
+        "func": "try {\n    // Parse payload if it's a string\n    let payload = typeof msg.payload === \"string\" ? JSON.parse(msg.payload) : msg.payload;\n    \n    // Just pass the raw value without scaling\n    const value = parseFloat(payload.LPG);\n    \n    // Simplest possible format for the chart\n    msg.topic = \"LPG\";\n    msg.payload = value;\n    \n    return msg;\n} catch (error) {\n    console.log(error);\n    return null;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 810,
+        "y": 1240,
+        "wires": [
+            [
+                "dcec89f508ec0efb",
+                "84a77c309b73728e"
+            ]
+        ]
+    },
+    {
+        "id": "84a77c309b73728e",
+        "type": "debug",
+        "z": "23fc9137c786aebb",
+        "name": "debug 43",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1010,
+        "y": 1180,
+        "wires": []
+    },
+    {
+        "id": "85e9e1fd3511b2c2",
+        "type": "function",
+        "z": "23fc9137c786aebb",
+        "name": "Process CO Data",
+        "func": "try {\n    // Parse payload if it's a string\n    let payload = typeof msg.payload === \"string\" ? JSON.parse(msg.payload) : msg.payload;\n    \n    // Just pass the raw value without scaling\n    const value = parseFloat(payload.CO);\n    \n    // Simplest possible format for the chart\n    msg.topic = \"CO\";\n    msg.payload = value;\n    \n    return msg;\n} catch (error) {\n    console.log(error);\n    return null;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 830,
+        "y": 1380,
+        "wires": [
+            [
+                "47c58edc61509cc6",
+                "63f79f247c7a4299"
+            ]
+        ]
+    },
+    {
+        "id": "47c58edc61509cc6",
+        "type": "ui_chart",
+        "z": "23fc9137c786aebb",
+        "name": "CO Concentration",
+        "group": "487946168fa418b0",
+        "order": 2,
+        "width": 16,
+        "height": 4,
+        "label": "Average CO Concentration (ppm)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "0.01",
+        "removeOlder": "100",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "1",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1eb36d",
+            "#000000",
+            "#000000",
+            "#000000",
+            "#000000",
+            "#000000",
+            "#000000",
+            "#000000",
+            "#000000"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1080,
+        "y": 1380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "63f79f247c7a4299",
+        "type": "debug",
+        "z": "23fc9137c786aebb",
+        "name": "debug 44",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1030,
+        "y": 1320,
+        "wires": []
+    },
+    {
+        "id": "e9aa29c50be55020",
+        "type": "function",
+        "z": "23fc9137c786aebb",
+        "name": "Process smoke Data",
+        "func": "try {\n    // Parse payload if it's a string\n    let payload = typeof msg.payload === \"string\" ? JSON.parse(msg.payload) : msg.payload;\n    \n    // Just pass the raw value without scaling\n    const value = parseFloat(payload.Smoke);\n    \n    // Simplest possible format for the chart\n    msg.topic = \"Smoke\";\n    msg.payload = value;\n    \n    return msg;\n} catch (error) {\n    console.log(error);\n    return null;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 840,
+        "y": 1540,
+        "wires": [
+            [
+                "7d230f2d91b2344e",
+                "8df5f296877f61b7"
+            ]
+        ]
+    },
+    {
+        "id": "7d230f2d91b2344e",
+        "type": "ui_chart",
+        "z": "23fc9137c786aebb",
+        "name": "Smoke Concentration",
+        "group": "487946168fa418b0",
+        "order": 3,
+        "width": 16,
+        "height": 4,
+        "label": "Average Smoke Concentration (ppm)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "0.1",
+        "removeOlder": "100",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "1",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#d77f2d",
+            "#000000",
+            "#000000",
+            "#000000",
+            "#000000",
+            "#000000",
+            "#000000",
+            "#000000",
+            "#000000"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1090,
+        "y": 1540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8df5f296877f61b7",
+        "type": "debug",
+        "z": "23fc9137c786aebb",
+        "name": "debug 45",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1030,
+        "y": 1480,
+        "wires": []
+    },
+    {
+        "id": "5b6e68464770216c",
+        "type": "comment",
+        "z": "23fc9137c786aebb",
+        "name": "analytics",
+        "info": "",
+        "x": 760,
+        "y": 1160,
+        "wires": []
+    },
+    {
+        "id": "4273c0a40dc612c8",
+        "type": "mysql",
+        "z": "23fc9137c786aebb",
+        "mydb": "b9170a1266df53af",
+        "name": "",
+        "x": 550,
+        "y": 1680,
+        "wires": [
+            [
+                "906a455749bdd1e9",
+                "e660028d30550c90"
+            ]
+        ]
+    },
+    {
+        "id": "906a455749bdd1e9",
+        "type": "function",
+        "z": "23fc9137c786aebb",
+        "name": "create ultrasonic table",
+        "func": "if (Array.isArray(msg.payload)) {\n    // Format the data\n    msg.payload = msg.payload.map(row => ({\n        dateTime: new Date(row.dateTime).toLocaleString(),\n        value: parseFloat(row.value).toFixed(4)\n    }));\n    return msg;\n} else {\n    node.error(\"Received non-array payload\");\n    return null;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 1680,
+        "wires": [
+            [
+                "c278c158d8fdcfd4",
+                "259154e0159ac746"
+            ]
+        ]
+    },
+    {
+        "id": "054d672fa05b0117",
+        "type": "function",
+        "z": "23fc9137c786aebb",
+        "name": "create gas table",
+        "func": "if (Array.isArray(msg.payload)) {\n    // Format the data\n    msg.payload = msg.payload.map(row => ({\n        dateTime: new Date(row.dateTime).toLocaleString(),\n        LPG: parseFloat(row.LPG).toFixed(4),\n        CO: parseFloat(row.CO).toFixed(4),\n        Smoke: parseFloat(row.smoke).toFixed(4)\n    }));\n    return msg;\n} else {\n    node.error(\"Received non-array payload\");\n    return null;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 1860,
+        "wires": [
+            [
+                "fb4b03d7ad4181f9",
+                "78564c770c6d4b1a"
+            ]
+        ]
+    },
+    {
+        "id": "c278c158d8fdcfd4",
+        "type": "debug",
+        "z": "23fc9137c786aebb",
+        "name": "debug 48",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 1720,
+        "wires": []
+    },
+    {
+        "id": "fb4b03d7ad4181f9",
+        "type": "debug",
+        "z": "23fc9137c786aebb",
+        "name": "debug 49",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 1900,
+        "wires": []
+    },
+    {
+        "id": "e660028d30550c90",
+        "type": "debug",
+        "z": "23fc9137c786aebb",
+        "name": "debug 51",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 540,
+        "y": 1640,
+        "wires": []
+    },
+    {
+        "id": "e5dd25cc60b879af",
+        "type": "function",
+        "z": "23fc9137c786aebb",
+        "name": "select data from ultrasonicdata table",
+        "func": "msg.topic = 'SELECT * FROM ultrasonicdata ORDER BY dateTime DESC LIMIT 100';\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 290,
+        "y": 1680,
+        "wires": [
+            [
+                "4273c0a40dc612c8"
+            ]
+        ]
+    },
+    {
+        "id": "78564c770c6d4b1a",
+        "type": "ui_table",
+        "z": "23fc9137c786aebb",
+        "group": "8dbfb6f1d2bfb208",
+        "name": "Past Session (gas)",
+        "order": 1,
+        "width": 10,
+        "height": 6,
+        "columns": [
+            {
+                "field": "dateTime",
+                "title": "date_Time",
+                "width": "",
+                "align": "center",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "LPG",
+                "title": "LPG (ppm)",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "CO",
+                "title": "CO (ppm)",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "Smoke",
+                "title": "Smoke (ppm)",
+                "width": "",
+                "align": "left",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 1090,
+        "y": 1860,
+        "wires": []
+    },
+    {
+        "id": "d97994469d911190",
+        "type": "function",
+        "z": "23fc9137c786aebb",
+        "name": "select data from gasdata table",
+        "func": "msg.topic = 'SELECT * FROM gasdata ORDER BY dateTime DESC LIMIT 100';\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 270,
+        "y": 1860,
+        "wires": [
+            [
+                "45ce96ab1247070a"
+            ]
+        ]
+    },
+    {
+        "id": "45ce96ab1247070a",
+        "type": "mysql",
+        "z": "23fc9137c786aebb",
+        "mydb": "b9170a1266df53af",
+        "name": "",
+        "x": 550,
+        "y": 1860,
+        "wires": [
+            [
+                "5adee30e2733e81f",
+                "054d672fa05b0117"
+            ]
+        ]
+    },
+    {
+        "id": "5adee30e2733e81f",
+        "type": "debug",
+        "z": "23fc9137c786aebb",
+        "name": "debug 52",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 540,
+        "y": 1820,
+        "wires": []
+    },
+    {
+        "id": "d77216df50c9d53b",
+        "type": "ui_button",
+        "z": "23fc9137c786aebb",
+        "name": "button",
+        "group": "8dbfb6f1d2bfb208",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "retrieve past session",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 50,
+        "y": 1860,
+        "wires": [
+            [
+                "d97994469d911190"
+            ]
+        ]
+    },
+    {
+        "id": "259154e0159ac746",
+        "type": "ui_table",
+        "z": "23fc9137c786aebb",
+        "group": "c67390ace78abd59",
+        "name": "Past Session (us)",
+        "order": 1,
+        "width": 10,
+        "height": 6,
+        "columns": [
+            {
+                "field": "dateTime",
+                "title": "date_Time",
+                "width": "",
+                "align": "center",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "value",
+                "title": "distance (in m)",
+                "width": "",
+                "align": "center",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 1090,
+        "y": 1680,
+        "wires": []
+    },
+    {
+        "id": "3a6deca8fc804d83",
+        "type": "ui_button",
+        "z": "23fc9137c786aebb",
+        "name": "button",
+        "group": "c67390ace78abd59",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "retrieve past session",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 50,
+        "y": 1680,
+        "wires": [
+            [
+                "e5dd25cc60b879af"
+            ]
+        ]
+    },
+    {
+        "id": "95755f95ac9938e8",
+        "type": "ui_table",
+        "z": "23fc9137c786aebb",
+        "group": "57156c78c35a21d7",
+        "name": "Past Cleaning Session",
+        "order": 1,
+        "width": 10,
+        "height": 6,
+        "columns": [
+            {
+                "field": "session_id",
+                "title": "Session ID",
+                "width": "",
+                "align": "center",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "startTime",
+                "title": "Start Time",
+                "width": "",
+                "align": "center",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "endTime",
+                "title": "End Time",
+                "width": "",
+                "align": "center",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            },
+            {
+                "field": "duration",
+                "title": "Duration",
+                "width": "",
+                "align": "center",
+                "formatter": "plaintext",
+                "formatterParams": {
+                    "target": "_blank"
+                }
+            }
+        ],
+        "outputs": 0,
+        "cts": false,
+        "x": 1100,
+        "y": 2000,
+        "wires": []
+    },
+    {
+        "id": "25938a6b1fcfd91d",
+        "type": "function",
+        "z": "23fc9137c786aebb",
+        "name": "create session table",
+        "func": "if (Array.isArray(msg.payload)) {\n    // Format the data\n    msg.payload = msg.payload.map(row => ({\n        session_id: parseInt(row.session_id),\n        startTime: new Date(row.startTime).toLocaleString(),\n        endTime: new Date(row.endTime).toLocaleString(),\n        duration: parseFloat(row.duration).toFixed(2)\n    }));\n    return msg;\n} else {\n    node.error(\"Received non-array payload\");\n    return null;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 840,
+        "y": 2000,
+        "wires": [
+            [
+                "bcccb47ea56375c7",
+                "95755f95ac9938e8"
+            ]
+        ]
+    },
+    {
+        "id": "60cf82b586cc6f56",
+        "type": "mysql",
+        "z": "23fc9137c786aebb",
+        "mydb": "b9170a1266df53af",
+        "name": "",
+        "x": 550,
+        "y": 2000,
+        "wires": [
+            [
+                "43a0fcbc686750fd",
+                "25938a6b1fcfd91d"
+            ]
+        ]
+    },
+    {
+        "id": "bcccb47ea56375c7",
+        "type": "debug",
+        "z": "23fc9137c786aebb",
+        "name": "debug 53",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 2040,
+        "wires": []
+    },
+    {
+        "id": "3d8b7749febba9e1",
+        "type": "function",
+        "z": "23fc9137c786aebb",
+        "name": "select data from cleaningsession table",
+        "func": "msg.topic = 'SELECT * FROM cleaningsession ORDER BY session_id DESC LIMIT 100';\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 290,
+        "y": 2000,
+        "wires": [
+            [
+                "60cf82b586cc6f56"
+            ]
+        ]
+    },
+    {
+        "id": "43a0fcbc686750fd",
+        "type": "debug",
+        "z": "23fc9137c786aebb",
+        "name": "debug 54",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 540,
+        "y": 1960,
+        "wires": []
+    },
+    {
+        "id": "a813c66e07007a1c",
+        "type": "ui_button",
+        "z": "23fc9137c786aebb",
+        "name": "button",
+        "group": "57156c78c35a21d7",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "retrieve past session",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 50,
+        "y": 2000,
+        "wires": [
+            [
+                "3d8b7749febba9e1"
+            ]
+        ]
+    },
+    {
+        "id": "23d4af2212bcb34f",
+        "type": "comment",
+        "z": "23fc9137c786aebb",
+        "name": "historical data",
+        "info": "",
+        "x": 130,
+        "y": 1580,
+        "wires": []
+    },
+    {
+        "id": "6dd4291b97d146c6",
+        "type": "mqtt-broker",
+        "name": "MQTT FK Luar",
+        "broker": "103.53.35.135",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "be60b5de6eea8b85",
+        "type": "ui_group",
+        "name": "camera feed",
+        "tab": "674f5d7a4da11607",
+        "order": 1,
+        "disp": true,
+        "width": 14,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "d7403c926761729c",
+        "type": "ui_group",
+        "name": "movement",
+        "tab": "674f5d7a4da11607",
+        "order": 2,
+        "disp": true,
+        "width": 8,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "b9170a1266df53af",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "cleaningsystemdb",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "92d60f693acbc072",
+        "type": "ui_group",
+        "name": "Ultrasonic Data",
+        "tab": "674f5d7a4da11607",
+        "order": 3,
+        "disp": true,
+        "width": "5",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "7e2a8c828da1f11b",
+        "type": "ui_group",
+        "name": "Gas Sensor",
+        "tab": "674f5d7a4da11607",
+        "order": 4,
+        "disp": true,
+        "width": "5",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "cd07a71064b7177d",
+        "type": "ui_group",
+        "name": "session",
+        "tab": "d1fac20e9d28c0ef",
+        "order": 2,
+        "disp": true,
+        "width": 8,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "487946168fa418b0",
+        "type": "ui_group",
+        "name": "Analytics",
+        "tab": "d1fac20e9d28c0ef",
+        "order": 1,
+        "disp": true,
+        "width": 16,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "8dbfb6f1d2bfb208",
+        "type": "ui_group",
+        "name": "Gas Sensor History",
+        "tab": "7ef5cfd60a686cad",
+        "order": 3,
+        "disp": true,
+        "width": 10,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "c67390ace78abd59",
+        "type": "ui_group",
+        "name": "Ultrasonic Sensor History",
+        "tab": "7ef5cfd60a686cad",
+        "order": 2,
+        "disp": true,
+        "width": 10,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "57156c78c35a21d7",
+        "type": "ui_group",
+        "name": "Past Cleaning Session",
+        "tab": "7ef5cfd60a686cad",
+        "order": 1,
+        "disp": true,
+        "width": 10,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "674f5d7a4da11607",
+        "type": "ui_tab",
+        "name": "HomeDC",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": true,
+        "hidden": false
+    },
+    {
+        "id": "d1fac20e9d28c0ef",
+        "type": "ui_tab",
+        "name": "analyticsDC",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "7ef5cfd60a686cad",
+        "type": "ui_tab",
+        "name": "historyDC",
+        "icon": "dashboard",
+        "order": 3,
+        "disabled": false,
+        "hidden": false
+    }
+]
